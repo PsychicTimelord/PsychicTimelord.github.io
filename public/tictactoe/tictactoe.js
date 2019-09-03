@@ -1,80 +1,169 @@
 
 let player = "1";
 
-document.getElementById("field").innerHTML = `
-                <button id="button1", onclick="start('button1')">_</button>|<button id="button2", onclick="start('button2')">_</button>|<button id="button3", onclick="start('button3')">_</button><br>
-                <button id="button4", onclick="start('button4')">_</button>|<button id="button5", onclick="start('button5')">_</button>|<button id="button6", onclick="start('button6')">_</button><br>
-                <button id="button7", onclick="start('button7')"></button>|<button id="button8", onclick="start('button8')"></button>|<button id="button9", onclick="start('button9')"></button>
-            `;
+class Field {
 
-function start(buttonId) {
-    if (document.getElementById("wonMassage").textContent == "") {
-        if (player == "1") {
-            if (document.getElementById(buttonId).textContent != "o") {
-                button(buttonId, "x");
-                player = "2";
-                check("1");
+    constructor(first, second, third, forth, fifth, sixth, seventh, eighth, ninth) {
+        this.first = first;
+        this.second = second;
+        this.third = third;
+        this.forth = forth;
+        this.fifth = fifth;
+        this.sixth = sixth;
+        this.seventh = seventh;
+        this.eighth = eighth;
+        this.ninth = ninth;
+    }
+
+    draw() {
+        document.getElementById("field").innerHTML = `
+                <button id="button1", onclick="field.place('button1')">${this.first}</button>|<button id="button2", onclick="field.place('button2')">${this.second}</button>|<button id="button3", onclick="field.place('button3')">${this.third}</button><br>
+                <button id="button4", onclick="field.place('button4')">${this.forth}</button>|<button id="button5", onclick="field.place('button5')">${this.fifth}</button>|<button id="button6", onclick="field.place('button6')">${this.sixth}</button><br>
+                <button id="button7", onclick="field.place('button7')">${this.seventh}</button>|<button id="button8", onclick="field.place('button8')">${this.eighth}</button>|<button id="button9", onclick="field.place('button9')">${this.ninth}</button>
+            `;
+    }
+
+    place(buttonId) {
+        if (document.getElementById("wonMassage").textContent == "") {
+            if (player == "1") {
+                if (document.getElementById(buttonId).textContent != "o") {
+                    switch (buttonId) {
+                        case "button1":
+                            this.first = "x";
+                            break;
+
+                        case "button2":
+                            this.second = "x";
+                            break;
+
+                        case "button3":
+                            this.third = "x";
+                            break;
+
+                        case "button4":
+                            this.forth = "x";
+                            break;
+
+                        case "button5":
+                            this.fifth = "x";
+                            break;
+
+                        case "button6":
+                            this.sixth = "x";
+                            break;
+
+                        case "button7":
+                            this.seventh = "x";
+                            break;
+
+                        case "button8":
+                            this.eighth = "x";
+                            break;
+
+                        case "button9":
+                            this.ninth = "x";
+                            break;
+                    }
+
+                    player = "2";
+                    this.check("1");
+                    this.draw();
+                }
+            } else if (player == "2") {
+                if (document.getElementById(buttonId).textContent != "x") {
+                    switch (buttonId) {
+                        case "button1":
+                            this.first = "o";
+                            break;
+
+                        case "button2":
+                            this.second = "o";
+                            break;
+
+                        case "button3":
+                            this.third = "o";
+                            break;
+
+                        case "button4":
+                            this.forth = "o";
+                            break;
+
+                        case "button5":
+                            this.fifth = "o";
+                            break;
+
+                        case "button6":
+                            this.sixth = "o";
+                            break;
+
+                        case "button7":
+                            this.seventh = "o";
+                            break;
+                        case "button8":
+                            this.eighth = "o";
+                            break;
+
+                        case "button9":
+                            this.ninth = "o";
+                            break;
+                    }
+
+                    player = "1";
+                    this.check("2");
+                    this.draw();
+                }
             }
-        } else if (player == "2") {
-            if (document.getElementById(buttonId).textContent != "x") {
-                button(buttonId, "o");
-                player = "1";
-                check("2");
-            }
+        }
+    }
+
+
+    check(player) {
+        let mark = "";
+        let win = `Spieler ${player} hat gewonnen!`;
+        let won = false;
+        let all = [this.first, this.second, this.third, this.forth, this.fifth, this.sixth, this.seventh, this.eighth, this.ninth];
+
+        switch (player) {
+            case "1":
+                mark = "x";
+                break;
+
+            case "2":
+                mark = "o";
+                break;
+        }
+
+        if (this.first == mark && this.second == mark && this.third == mark) {
+            won = true;
+        } else if (this.forth == mark && this.fifth == mark && this.sixth == mark) {
+            won = true;
+        } else if (this.seventh == mark && this.eighth == mark && this.ninth == mark) {
+            won = true;
+
+        } else if (this.first == mark && this.forth == mark && this.seventh == mark) {
+            won = true;
+        } else if (this.second == mark && this.fifth == mark && this.eighth == mark) {
+            won = true;
+        } else if (this.third == mark && this.sixth == mark && this.ninth == mark) {
+            won = true;
+
+        } else if (this.first == mark && this.fifth == mark && this.ninth == mark) {
+            won = true;
+        } else if (this.third == mark && this.fifth == mark && this.seventh == mark) {
+            won = true;
+        } else if (!all.includes("_") && !all.includes("")) {
+            document.getElementById("wonMassage").textContent = "Unentschieden!"
+        }
+
+
+
+
+
+        if (won) {
+            document.getElementById("wonMassage").textContent = win;
         }
     }
 }
 
-function button(button, mark) {
-    document.getElementById(button).textContent = mark;
-}
-
-function check(player) {
-    let mark = "";
-    let win = `Spieler ${player} hat gewonnen!`;
-    let won = false;
-
-    switch (player) {
-        case "1":
-            mark = "x";
-            break;
-
-        case "2":
-            mark = "o";
-            break;
-    }
-
-    let first = document.getElementById("button1").textContent;
-    let second = document.getElementById("button2").textContent;
-    let third = document.getElementById("button3").textContent;
-    let forth = document.getElementById("button4").textContent;
-    let fifth = document.getElementById("button5").textContent;
-    let sixth = document.getElementById("button6").textContent;
-    let seventh = document.getElementById("button7").textContent;
-    let eighth = document.getElementById("button8").textContent;
-    let ninth = document.getElementById("button9").textContent;
-
-    if (first == mark && second == mark && third == mark) {
-        won = true;
-    } else if (forth == mark && fifth == mark && sixth == mark) {
-        won = true;
-    } else if (seventh == mark && eighth == mark && ninth == mark) {
-        won = true;
-
-    } else if (first == mark && forth == mark && seventh == mark) {
-        won = true;
-    } else if (second == mark && fifth == mark && eighth == mark) {
-        won = true;
-    } else if (third == mark && sixth == mark && ninth == mark) {
-        won = true;
-
-    } else if (first == mark && fifth == mark && ninth == mark) {
-        won = true;
-    } else if (third == mark && fifth == mark && seventh == mark) {
-        won = true;
-    }
-
-    if (won) {
-        document.getElementById("wonMassage").textContent = win
-    }
-} 
+let field = new Field("_", "_", "_", "_", "_", "_", "", "", "");
+field.draw();
