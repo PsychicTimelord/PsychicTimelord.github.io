@@ -151,13 +151,8 @@ class Field {
             won = true;
         } else if (this.third == mark && this.fifth == mark && this.seventh == mark) {
             won = true;
-        } else if (!all.includes("_") && !all.includes("")) {
-            document.getElementById("wonMassage").textContent = "Unentschieden!"
-        }
-
-
-
-
+        } else if (!all.includes("_") && !all.includes(""))
+            document.getElementById("wonMassage").textContent = "Unentschieden!";
 
         if (won) {
             document.getElementById("wonMassage").textContent = win;
