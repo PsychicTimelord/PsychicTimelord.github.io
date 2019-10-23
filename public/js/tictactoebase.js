@@ -9,6 +9,12 @@ function Game(first, second, third, forth, fifth, sixth, seventh, eighth, ninth)
     this.eighth = eighth;
     this.ninth = ninth;
     this.player = "1";
+    this.placed = false;
+
+
+    this.firstr = [this.first, this.second, this.third];
+    this.secondr = [this.forth, this.fifth, this.sixth];
+    this.thirdr = [this.seventh, this.eighth, this.ninth];
 
     this.draw = function () {
         document.getElementById("field").innerHTML = `
@@ -20,6 +26,7 @@ function Game(first, second, third, forth, fifth, sixth, seventh, eighth, ninth)
 
     this.place = function (buttonId) {
         if (document.getElementById("wonMassage").textContent == "") {
+            this.placed = true;
             if (this.player == "1") {
                 if (document.getElementById(buttonId).textContent != "o") {
                     switch (buttonId) {
@@ -106,6 +113,7 @@ function Game(first, second, third, forth, fifth, sixth, seventh, eighth, ninth)
                     this.check("2");
                 }
             }
+            this.placed = false;
             this.draw();
         }
     };
@@ -116,36 +124,41 @@ function Game(first, second, third, forth, fifth, sixth, seventh, eighth, ninth)
         let won = false;
         let all = [this.first, this.second, this.third, this.forth, this.fifth, this.sixth, this.seventh, this.eighth, this.ninth];
 
+        let vfirst = [this.first, this.forth, this.seventh];
+        let vsecond = [this.second, this.fifth, this.eighth];
+        let vthird = [this.third, this.sixth, this.ninth];
+        let diagonal1 = [this.first, this.fifth, this.ninth];
+        let diagonal2 = [this.third, this.fifth, this.seventh];
+
         switch (player) {
             case "1":
-                mark = "x";
+                mark = "o";
                 break;
 
             case "2":
-                mark = "o";
+                mark = "x";
                 break;
         }
 
-        if (this.first == mark && this.second == mark && this.third == mark) {
+        if (!this.firstr.includes(mark) && !this.firstr.includes("_")) {
             won = true;
-        } else if (this.forth == mark && this.fifth == mark && this.sixth == mark) {
+        } else if (!this.secondr.includes(mark) && !this.secondr.includes("_")) {
             won = true;
-        } else if (this.seventh == mark && this.eighth == mark && this.ninth == mark) {
+        } else if (!this.thirdr.includes(mark) && !this.thirdr.includes("")) {
             won = true;
-
-        } else if (this.first == mark && this.forth == mark && this.seventh == mark) {
+        } else if (!vfirst.includes(mark) && !vfirst.includes("") && !vfirst.includes("_")) {
             won = true;
-        } else if (this.second == mark && this.fifth == mark && this.eighth == mark) {
+        } else if (!vsecond.includes(mark) && !vsecond.includes("") && !vsecond.includes("_")) {
             won = true;
-        } else if (this.third == mark && this.sixth == mark && this.ninth == mark) {
+        } else if (!vthird.includes(mark) && !vthird.includes("") && !vthird.includes("_")) {
             won = true;
-
-        } else if (this.first == mark && this.fifth == mark && this.ninth == mark) {
+        } else if (!diagonal1.includes(mark) && !diagonal1.includes("") && !diagonal1.includes("_")) {
             won = true;
-        } else if (this.third == mark && this.fifth == mark && this.seventh == mark) {
+        } else if (!diagonal2.includes(mark) && !diagonal2.includes("") && !diagonal2.includes("_")) {
             won = true;
-        } else if (!all.includes("_") && !all.includes(""))
+        } else if (!all.includes("_") && !all.includes("")) {
             document.getElementById("wonMassage").textContent = "Unentschieden!";
+        }
 
         if (won) {
             document.getElementById("wonMassage").textContent = win;
