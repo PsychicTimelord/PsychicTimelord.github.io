@@ -11,11 +11,6 @@ function Game(first, second, third, forth, fifth, sixth, seventh, eighth, ninth)
     this.player = "1";
     this.placed = false;
 
-
-    this.firstr = [this.first, this.second, this.third];
-    this.secondr = [this.forth, this.fifth, this.sixth];
-    this.thirdr = [this.seventh, this.eighth, this.ninth];
-
     this.draw = function () {
         document.getElementById("field").innerHTML = `
                 <button id="button1", onclick="field.place('button1')">${this.first}</button>|<button id="button2", onclick="field.place('button2')">${this.second}</button>|<button id="button3", onclick="field.place('button3')">${this.third}</button><br>
@@ -124,6 +119,9 @@ function Game(first, second, third, forth, fifth, sixth, seventh, eighth, ninth)
         let won = false;
         let all = [this.first, this.second, this.third, this.forth, this.fifth, this.sixth, this.seventh, this.eighth, this.ninth];
 
+        let firstr = [this.first, this.second, this.third];
+        let secondr = [this.forth, this.fifth, this.sixth];
+        let thirdr = [this.seventh, this.eighth, this.ninth];
         let vfirst = [this.first, this.forth, this.seventh];
         let vsecond = [this.second, this.fifth, this.eighth];
         let vthird = [this.third, this.sixth, this.ninth];
@@ -140,11 +138,11 @@ function Game(first, second, third, forth, fifth, sixth, seventh, eighth, ninth)
                 break;
         }
 
-        if (!this.firstr.includes(mark) && !this.firstr.includes("_")) {
+        if (!firstr.includes(mark) && !firstr.includes("_")) {
             won = true;
-        } else if (!this.secondr.includes(mark) && !this.secondr.includes("_")) {
+        } else if (!secondr.includes(mark) && !secondr.includes("_")) {
             won = true;
-        } else if (!this.thirdr.includes(mark) && !this.thirdr.includes("")) {
+        } else if (!thirdr.includes(mark) && !thirdr.includes("")) {
             won = true;
         } else if (!vfirst.includes(mark) && !vfirst.includes("") && !vfirst.includes("_")) {
             won = true;
