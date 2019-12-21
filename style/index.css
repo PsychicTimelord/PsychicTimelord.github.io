@@ -13,28 +13,19 @@ button {
     block-size: 50px;
 }
 
-#games {
-  display: block;
-  font-size: 50px;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 20px
-}
-
 #glist {
     color: white;
+    text-decoration: none;
     font-size: 22px;
     visibility: hidden;
     position: relative;
-    left: 50px;
-    bottom: 40px;
+    left: 75px;
+    bottom: 10px;
 }
 
 #tictactoe {
     font-size: 35px;
     font-family: sans-serif;
     position: relative;
-    left: 10px;
+    left: 35px;
 }
