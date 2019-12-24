@@ -9,14 +9,25 @@
 </head>
 
 <body>
-    <table>
+    <table id="header">
         <tr>
-            <button id="tictactoe" onclick="buttenSelect()">TicTacToe</button>
+            <button id="games_button" class="header" onclick="gamesButton();">Games</button>
+        </tr>
+
+        <tr>
+            <button id="show_tools" class="header" onclick="toolsButton();">CheckStrings</button>
         </tr>
         <hr>
     </table>
-    <div>
-        <p><a id="glist" href="tictactoe/mp/tictactoemp.html">2 Player</a></p>
+
+    <div id="games" style="visibility: hidden;">
+        <a id="tictactoebtn" class="buttons_list" href="tictactoe/tictactoe.html">TicTacToe</a>
+        <br>
+        <a id="snakebtn" class="buttons_list" href="snake/snake.html">Snake</a>
+    </div>
+
+    <div id="tools" style="visibility: hidden;">
+        <a id="checkstrings" class="buttons_list" href="tools/checkstrings.html">CheckStrings</a>
     </div>
 </body>
 

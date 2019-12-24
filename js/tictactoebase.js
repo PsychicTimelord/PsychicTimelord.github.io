@@ -1,4 +1,4 @@
-function Game(first, second, third, forth, fifth, sixth, seventh, eighth, ninth) {
+export default function Game(first, second, third, forth, fifth, sixth, seventh, eighth, ninth) {
     this.first = first;
     this.second = second;
     this.third = third;
@@ -162,4 +162,4 @@ function Game(first, second, third, forth, fifth, sixth, seventh, eighth, ninth)
             document.getElementById("wonMassage").textContent = win;
         }
     };
-};
+}

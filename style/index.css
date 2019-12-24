@@ -9,23 +9,38 @@ button {
     border: none;
     cursor:pointer;
     outline:none;
-    inline-size: 100px;
-    block-size: 50px;
 }
 
-#glist {
-    color: white;
-    text-decoration: none;
-    font-size: 22px;
-    visibility: hidden;
+#games {
     position: relative;
-    left: 75px;
     bottom: 10px;
+    background-color: #3b3b3b;
+    height: 100px;
 }
 
-#tictactoe {
+#tools {
+    position: relative;
+    bottom: 110px;
+    background-color: #3b3b3b;
+    height: 100px;
+}
+
+.header {
     font-size: 35px;
+    color: white;
     font-family: sans-serif;
     position: relative;
     left: 35px;
+    padding-right: 25px;
+}
+
+.buttons_list { 
+    font-size: 25px;
+    color: white;
+    font-family: sans-serif;
+    position: relative;
+    top:5px;
+    left: 50px;
+    padding-bottom: 5px;
+    text-decoration: none;
 }
