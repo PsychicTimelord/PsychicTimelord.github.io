@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "target": "ESNext"
+    },
+    "files": [
+        "./public/tictactoe/tictactoebase.ts",
+        "./public/tictactoe/tictactoe.ts"
+    ]
+}
