@@ -46,33 +46,41 @@ function Game(db, password) {
                     switch (buttonId) {
                         case "button1":
                             gameCollection.update({ first: "x" });
+                            gameCollection.update({ turn: "2" });
                             break;
                         case "button2":
                             gameCollection.update({ second: "x" });
+                            gameCollection.update({ turn: "2" });
                             break;
                         case "button3":
                             gameCollection.update({ third: "x" });
+                            gameCollection.update({ turn: "2" });
                             break;
                         case "button4":
                             gameCollection.update({ fourth: "x" });
+                            gameCollection.update({ turn: "2" });
                             break;
                         case "button5":
                             gameCollection.update({ fifth: "x" });
+                            gameCollection.update({ turn: "2" });
                             break;
                         case "button6":
                             gameCollection.update({ sixth: "x" });
+                            gameCollection.update({ turn: "2" });
                             break;
                         case "button7":
                             gameCollection.update({ seventh: "x" });
+                            gameCollection.update({ turn: "2" });
                             break;
                         case "button8":
                             gameCollection.update({ eight: "x" });
+                            gameCollection.update({ turn: "2" });
                             break;
                         case "button9":
-                            gameCollection.update({ nineth: "x" });
+                            gameCollection.update({ ninth: "x" });
+                            gameCollection.update({ turn: "2" });
                             break;
                     }
-                    gameCollection.update({ turn: "2" });
                     this.check("1");
                 }
             }
@@ -81,33 +89,41 @@ function Game(db, password) {
                     switch (buttonId) {
                         case "button1":
                             gameCollection.update({ first: "o" });
+                            gameCollection.update({ turn: "1" });
                             break;
                         case "button2":
                             gameCollection.update({ second: "o" });
+                            gameCollection.update({ turn: "1" });
                             break;
                         case "button3":
                             gameCollection.update({ third: "o" });
+                            gameCollection.update({ turn: "1" });
                             break;
                         case "button4":
                             gameCollection.update({ fourth: "o" });
+                            gameCollection.update({ turn: "1" });
                             break;
                         case "button5":
                             gameCollection.update({ fifth: "o" });
+                            gameCollection.update({ turn: "1" });
                             break;
                         case "button6":
                             gameCollection.update({ sixth: "o" });
+                            gameCollection.update({ turn: "1" });
                             break;
                         case "button7":
                             gameCollection.update({ seventh: "o" });
+                            gameCollection.update({ turn: "1" });
                             break;
                         case "button8":
                             gameCollection.update({ eight: "o" });
+                            gameCollection.update({ turn: "1" });
                             break;
                         case "button9":
-                            gameCollection.update({ nineth: "o" });
+                            gameCollection.update({ ninth: "o" });
+                            gameCollection.update({ turn: "1" });
                             break;
                     }
-                    gameCollection.update({ turn: "1" });
                     this.check("2");
                 }
             }
