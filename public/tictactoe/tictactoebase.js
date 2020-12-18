@@ -5,9 +5,7 @@ function Game(db, password) {
     this.init = () => {
         gameCollection.get().then(doc => {
             const data = doc.data();
-            console.log(data);
             const players = data.players;
-            console.log(players);
             if (players === "0") {
                 player = "1";
                 gameCollection.update({ players: "1" });
@@ -16,7 +14,7 @@ function Game(db, password) {
                 player = "2";
                 gameCollection.update({ players: "2" });
             }
-            console.log(player);
+            console.log("init completed");
             this.draw();
         });
         gameCollection.onSnapshot(doc => {
@@ -32,10 +30,10 @@ function Game(db, password) {
             <button id="button7", onclick="field.place('button7')">${data.seventh}</button>|<button id="button8", onclick="field.place('button8')">${data.eight}</button>|<button id="button9", onclick="field.place('button9')">${data.ninth}</button>`;
             if (data.won !== "") {
                 if (data.won === "tie") {
-                    document.getElementById("wonMessage").textContent = `Unentschieden!`;
+                    document.getElementById("wonMessage").textContent = `Tie!`;
                 }
                 else
-                    document.getElementById("wonMessage").textContent = `Spieler ${data.won} hat gewonnen!`;
+                    document.getElementById("wonMessage").textContent = `Player ${data.won} won!`;
             }
         });
     };
