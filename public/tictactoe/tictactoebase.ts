@@ -1,7 +1,7 @@
-function Game(db) {
+function Game(db, password) {
     let player: string;
     let turn: string;
-    const gameCollection = db.collection("games").doc("dev-game");
+    const gameCollection = db.collection("games").doc(password);
 
     this.init = () => {
         gameCollection.get().then(doc => {
@@ -16,29 +16,33 @@ function Game(db) {
                 player = "2";
                 gameCollection.update({ players: "2" });
             }
+            console.log(player);
+            this.draw();
         });
-
         gameCollection.onSnapshot(doc => {
             turn = doc.data().turn;
         });
-
-        console.log(player);
-        this.draw();
     }
 
     this.draw = function () {
         gameCollection.onSnapshot(doc => {
             const data = doc.data();
-            console.log(data);
             document.getElementById("field").innerHTML = `     
             <button id="button1", onclick="field.place('button1')">${data.first}</button>|<button id="button2", onclick="field.place('button2')">${data.second}</button>|<button id="button3", onclick="field.place('button3')">${data.third}</button><br>
             <button id="button4", onclick="field.place('button4')">${data.fourth}</button>|<button id="button5", onclick="field.place('button5')">${data.fifth}</button>|<button id="button6", onclick="field.place('button6')">${data.sixth}</button><br>
-            <button id="button7", onclick="field.place('button7')">${data.seventh}</button>|<button id="button8", onclick="field.place('button8')">${data.eight}</button>|<button id="button9", onclick="field.place('button9')">${data.nineth}</button>`
+            <button id="button7", onclick="field.place('button7')">${data.seventh}</button>|<button id="button8", onclick="field.place('button8')">${data.eight}</button>|<button id="button9", onclick="field.place('button9')">${data.ninth}</button>`
+
+            if (data.won !== "") {
+                if (data.won === "tie") {
+                    document.getElementById("wonMessage").textContent = `Unentschieden!`;
+                } else
+                    document.getElementById("wonMessage").textContent = `Spieler ${data.won} hat gewonnen!`;
+            }
         });
     };
 
     this.place = function (buttonId) {
-        if (document.getElementById("wonMassage").textContent == "") {
+        if (document.getElementById("wonMessage").textContent == "") {
             if (player === "1" && turn === "1") {
                 if (document.getElementById(buttonId).textContent != "o") {
                     switch (buttonId) {
@@ -79,7 +83,7 @@ function Game(db) {
                             break;
                     }
                     gameCollection.update({ turn: "2" });
-                    this.check("1");
+                    this.check("1")
                 }
             } else if (player == "2" && turn === "2") {
                 if (document.getElementById(buttonId).textContent != "x") {
@@ -121,60 +125,74 @@ function Game(db) {
                             break;
                     }
                     gameCollection.update({ turn: "1" });
-                    this.check("2");
+                    this.check("2")
                 }
             }
         }
 
     };
 
-    // this.check = function (player) {
-    //     let mark = "";
-    //     let win = `Spieler ${player} hat gewonnen!`;
-    //     let won = false;
-    //     let all = [this.first, this.second, this.third, this.forth, this.fifth, this.sixth, this.seventh, this.eighth, this.ninth];
+    this.check = function (player) {
+        gameCollection.get().then(doc => {
+            const data = doc.data();
+            let first = data.first;
+            let second = data.second;
+            let third = data.third;
+            let fourth = data.fourth;
+            let fifth = data.fifth;
+            let sixth = data.sixth;
+            let seventh = data.seventh;
+            let eighth = data.eighth;
+            let ninth = data.ninth;
 
-    //     let firstr = [this.first, this.second, this.third];
-    //     let secondr = [this.forth, this.fifth, this.sixth];
-    //     let thirdr = [this.seventh, this.eighth, this.ninth];
-    //     let vfirst = [this.first, this.forth, this.seventh];
-    //     let vsecond = [this.second, this.fifth, this.eighth];
-    //     let vthird = [this.third, this.sixth, this.ninth];
-    //     let diagonal1 = [this.first, this.fifth, this.ninth];
-    //     let diagonal2 = [this.third, this.fifth, this.seventh];
+            let mark = "";
+            let won = false;
 
-    //     switch (player) {
-    //         case "1":
-    //             mark = "o";
-    //             break;
+            let all = [first, second, third, fourth, fifth, sixth, seventh, eighth, ninth];
+            let firstr = [first, second, third];
+            let secondr = [fourth, fifth, sixth];
+            let thirdr = [seventh, eighth, ninth];
+            let vfirst = [first, fourth, seventh];
+            let vsecond = [second, fifth, eighth];
+            let vthird = [third, sixth, ninth];
+            let diagonal1 = [first, fifth, ninth];
+            let diagonal2 = [third, fifth, seventh];
 
-    //         case "2":
-    //             mark = "x";
-    //             break;
-    //     }
+            switch (player) {
+                case "1":
+                    mark = "x";
+                    break;
 
-    //     if (!firstr.includes(mark) && !firstr.includes("_")) {
-    //         won = true;
-    //     } else if (!secondr.includes(mark) && !secondr.includes("_")) {
-    //         won = true;
-    //     } else if (!thirdr.includes(mark) && !thirdr.includes("")) {
-    //         won = true;
-    //     } else if (!vfirst.includes(mark) && !vfirst.includes("") && !vfirst.includes("_")) {
-    //         won = true;
-    //     } else if (!vsecond.includes(mark) && !vsecond.includes("") && !vsecond.includes("_")) {
-    //         won = true;
-    //     } else if (!vthird.includes(mark) && !vthird.includes("") && !vthird.includes("_")) {
-    //         won = true;
-    //     } else if (!diagonal1.includes(mark) && !diagonal1.includes("") && !diagonal1.includes("_")) {
-    //         won = true;
-    //     } else if (!diagonal2.includes(mark) && !diagonal2.includes("") && !diagonal2.includes("_")) {
-    //         won = true;
-    //     } else if (!all.includes("_") && !all.includes("")) {
-    //         document.getElementById("wonMassage").textContent = "Unentschieden!";
-    //     }
+                case "2":
+                    mark = "o";
+                    break;
+            }
 
-    //     if (won) {
-    //         document.getElementById("wonMassage").textContent = win;
-    //     }
-    // };
+            if (firstr[0] === mark && firstr[1] === mark && firstr[2] === mark) {
+                won = true;
+            } else if (secondr[0] === mark && secondr[1] === mark && secondr[2] === mark) {
+                won = true;
+            } else if (thirdr[0] === mark && thirdr[1] === mark && thirdr[2] === mark) {
+                won = true;
+            } else if (diagonal2[0] === mark && diagonal2[1] === mark && firstr[2] === mark) {
+                won = true;
+            } else if (diagonal1[0] === mark && diagonal1[1] === mark && diagonal1[2] === mark) {
+                won = true;
+            } else if (vfirst[0] === mark && vfirst[1] === mark && vfirst[2] === mark) {
+                won = true;
+            } else if (vsecond[0] === mark && vsecond[1] === mark && vsecond[2] === mark) {
+                won = true;
+            } else if (vthird[0] === mark && vthird[1] === mark && vthird[2] === mark) {
+                won = true;
+            } else if (!all.includes("") && !all.includes("_")) {
+                gameCollection.update({ won: "tie" });
+                gameCollection.update({ turn: "3" });
+            }
+
+            if (won) {
+                gameCollection.update({ won: player });
+                gameCollection.update({ turn: "3" });
+            }
+        });
+    };
 };
