@@ -1,46 +1,86 @@
+:root {
+  font-size: 16px;
+  font-family: 'Open Sans';
+  --text-primary: white;
+  --bg-color: #1F1F1F;
+}
+
 body {
-    font-family: sans-serif;
-    background-color: #000;
+  color: white;
+  background-color:black;
+  margin: 0;
+  padding: 0;
 }
 
-button {
-    color: white;
-    background-color: Transparent;
-    border: none;
-    cursor:pointer;
-    outline:none;
+main {
+  margin-left: 15rem;
+  padding: 1rem;
 }
 
-#games {
-    position: relative;
-    bottom: 10px;
-    background-color: #3b3b3b;
-    height: 100px;
+.navbar {
+  position: fixed;
+  background-color: var(--bg-color);
+  overflow: scroll;
 }
 
-#tools {
-    position: relative;
-    bottom: 110px;
-    background-color: #3b3b3b;
-    height: 100px;
+.navbar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
 }
 
-.header {
-    font-size: 35px;
-    color: white;
-    font-family: sans-serif;
-    position: relative;
-    left: 35px;
-    padding-right: 25px;
+.nav-item {
+  width: 100%;
 }
 
-.buttons_list { 
-    font-size: 25px;
-    color: white;
-    font-family: sans-serif;
-    position: relative;
-    top:5px;
-    left: 50px;
-    padding-bottom: 5px;
-    text-decoration: none;
+.nav-link {
+  display: flex;
+  align-items: center;
+  height: 5rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  filter: grayscale(100%) opacity(0.7);
+  transition: var(--transition-speed);
+}
+
+.link-text {
+    padding: 1rem;
+}
+
+/* Small screens */
+@media only screen and (max-width: 600px) {
+  .navbar {
+    bottom: 0;
+    width: 100vw;
+    height: 5rem;
+  }
+
+  .navbar-nav {
+    flex-direction: row;
+  }
+
+  .nav-link {
+    justify-content: center;
+  }
+
+  main {
+    margin: 0;
+  }
+}
+
+/* Large screens */
+@media only screen and (min-width: 600px) {
+  .navbar {
+    top: 0;
+    width: 15rem;
+    height: 100vh;
+  }
+
+  .link-text {
+      font-size: 20px;
+  }
 }
