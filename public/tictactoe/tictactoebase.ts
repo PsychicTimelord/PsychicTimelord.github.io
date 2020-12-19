@@ -1,7 +1,8 @@
-function Game(db, password) {
+function Game(db, gameID) {
     let player: string;
     let turn: string;
-    const gameCollection = db.collection("games").doc(password);
+    let turnStream;
+    const gameCollection = db.collection("games").doc(gameID);
 
     this.init = () => {
         gameCollection.get().then(doc => {
@@ -17,13 +18,13 @@ function Game(db, password) {
             console.log("init completed");
             this.draw();
         });
-        gameCollection.onSnapshot(doc => {
+        turnStream = gameCollection.onSnapshot(doc => {
             turn = doc.data().turn;
         });
     }
 
     this.draw = function () {
-        gameCollection.onSnapshot(doc => {
+        const mainStream = gameCollection.onSnapshot(doc => {
             const data = doc.data();
             document.getElementById("field").innerHTML = `     
             <button id="button1", onclick="field.place('button1')">${data.first}</button>|<button id="button2", onclick="field.place('button2')">${data.second}</button>|<button id="button3", onclick="field.place('button3')">${data.third}</button><br>
@@ -33,15 +34,28 @@ function Game(db, password) {
             if (data.won !== "") {
                 if (data.won === "tie") {
                     document.getElementById("wonMessage").textContent = `Tie!`;
-                } else
+                    turnStream();
+                    mainStream();
+                    if (player === "1") {
+                        db.collection("games").doc(gameID).delete().then(() => {
+                            console.log("game deleted!")
+                        });
+                    }
+                } else {
                     document.getElementById("wonMessage").textContent = `Player ${data.won} won!`;
+                    turnStream();
+                    mainStream();
+                    if (player === "1") {
+                        db.collection("games").doc(gameID).delete().then(() => {
+                            console.log("game deleted!")
+                        });
+                    }
+                }
             }
             if (data.turn === player) {
                 document.getElementById("turnMessage").textContent = "Your turn!";
-                console.log(player);
             } else {
                 document.getElementById("turnMessage").textContent = "";
-                console.log(player);
             }
         });
     };
