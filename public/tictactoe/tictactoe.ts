@@ -27,7 +27,10 @@ function create() {
                     seventh: "",
                     eight: "",
                     ninth: "",
-                    players: "0",
+                    players: [
+                        //@ts-ignore
+                        firebase.auth().currentUser.uid
+                    ],
                     turn: "1",
                     won: ""
                 })
@@ -50,19 +53,24 @@ function create() {
 }
 
 function join() {
-    db.collection("games").doc(id.value).get().then(doc => {
-        if (doc.exists && password.value === doc.data().password) {
-            if (doc.data().players !== "2") {
-                field = new Game(db, id.value);
-                field.init();
-                console.log("join");
-                document.getElementById("login").innerHTML = ""; //delete login form
+    try {
+        db.collection("games").doc(id.value).get().then(doc => {
+            if (doc.exists && password.value === doc.data().password) {
+                if (doc.data().players.length < 2) {
+                    //@ts-ignore
+                    db.collection("games").doc(id.value).update({ players: firebase.firestore.FieldValue.arrayUnion(firebase.auth().currentUser.uid) });
+                    field = new Game(db, id.value);
+                    field.init();
+                    console.log("join");
+                    document.getElementById("login").innerHTML = ""; //delete login form
+                } else {
+                    alert("The game is full!");
+                }
             } else {
-                alert("The game is full!");
+                alert("This or password is incorrect!");
             }
-        } else {
-            alert("This or password is incorrect!");
-        }
-    });
-
+        });
+    } catch (e) {
+        console.log(e);
+    }
 }   

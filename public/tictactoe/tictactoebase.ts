@@ -6,13 +6,13 @@ function Game(db, password) {
     this.init = () => {
         gameCollection.get().then(doc => {
             const data = doc.data();
-            const players = data.players;
-            if (players === "0") {
+            const players: Array<string> = data.players;
+            //@ts-ignore
+            const uuid = firebase.auth().currentUser.uid;
+            if (players[0] === uuid) {
                 player = "1";
-                gameCollection.update({ players: "1" });
-            } else if (players === "1") {
+            } else if (players[1] === uuid) {
                 player = "2";
-                gameCollection.update({ players: "2" });
             }
             console.log("init completed");
             this.draw();
@@ -35,6 +35,13 @@ function Game(db, password) {
                     document.getElementById("wonMessage").textContent = `Tie!`;
                 } else
                     document.getElementById("wonMessage").textContent = `Player ${data.won} won!`;
+            }
+            if (data.turn === player) {
+                document.getElementById("turnMessage").textContent = "Your turn!";
+                console.log(player);
+            } else {
+                document.getElementById("turnMessage").textContent = "";
+                console.log(player);
             }
         });
     };

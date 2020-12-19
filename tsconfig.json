@@ -4,6 +4,7 @@
     },
     "files": [
         "./public/tictactoe/tictactoebase.ts",
-        "./public/tictactoe/tictactoe.ts"
+        "./public/tictactoe/tictactoe.ts",
+        "./public/tictactoe/auth.ts"
     ]
 }

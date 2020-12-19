@@ -66,3 +66,4 @@ node_modules/
 .env
 public/tictactoe/tictactoe.js
 public/tictactoe/tictactoebase.js
+public/tictactoe/auth.js
