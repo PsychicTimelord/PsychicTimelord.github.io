@@ -2,7 +2,7 @@ let field;
 let app;
 let db;
 const password = document.getElementById("game-password") as HTMLInputElement;
-const id = document.getElementById("game-id") as HTMLInputElement;
+const idElement = document.getElementById("game-id") as HTMLInputElement;
 
 document.addEventListener("DOMContentLoaded", event => {
     //@ts-ignore
@@ -11,12 +11,15 @@ document.addEventListener("DOMContentLoaded", event => {
     db = firebase.firestore();
 });
 
-function create() {
-    try {
-        const game = db.collection("games");
-        game.doc(id.value).get().then(doc => {
-            if (!doc.exists) {
-                game.doc(id.value).set({
+async function create() {
+    if (idElement.value !== "") {
+        try {
+            console.log("create");
+            const game = db.collection("games");
+            const gameDoc = await game.doc(idElement.value).get();
+
+            if (await !gameDoc.exists) {
+                await game.doc(idElement.value).set({
                     password: password.value,
                     first: "_",
                     second: "_",
@@ -34,42 +37,38 @@ function create() {
                     turn: "1",
                     won: ""
                 })
-                    .then(function () {
-                        console.log("create");
-                        document.getElementById("login").innerHTML = "";
-                        field = new Game(db, id.value);
-                        field.init();
-                    })
-                    .catch(function (error) {
-                        console.error("Error writing document: ", error);
-                    });
+                document.getElementById("login").innerHTML = "";
+                field = new Game(db, idElement.value);
+                field.init();
             } else {
                 alert("this id is already in use!");
             }
-        });
-    } catch (e) {
-        console.log(e);
-    }
+        } catch (e) {
+            console.log(e);
+        }
+    } else
+        alert("You have to enter an ID!");
+
 }
 
-function join() {
+async function join() {
     try {
-        db.collection("games").doc(id.value).get().then(doc => {
-            if (doc.exists && password.value === doc.data().password) {
-                if (doc.data().players.length < 2) {
-                    //@ts-ignore
-                    db.collection("games").doc(id.value).update({ players: firebase.firestore.FieldValue.arrayUnion(firebase.auth().currentUser.uid) });
-                    field = new Game(db, id.value);
-                    field.init();
-                    console.log("join");
-                    document.getElementById("login").innerHTML = ""; //delete login form
-                } else {
-                    alert("The game is full!");
-                }
+        const doc = await db.collection("games").doc(idElement.value).get()
+
+        if (await doc.exists && password.value === doc.data().password) {
+            if (doc.data().players.length < 2) {
+                //@ts-ignore
+                await db.collection("games").doc(idElement.value).update({ players: firebase.firestore.FieldValue.arrayUnion(firebase.auth().currentUser.uid) });
+                field = new Game(db, idElement.value);
+                field.init();
+                console.log("join");
+                document.getElementById("login").innerHTML = ""; //delete login form
             } else {
-                alert("This or password is incorrect!");
+                alert("The game is full!");
             }
-        });
+        } else {
+            alert("This or password is incorrect!");
+        }
     } catch (e) {
         console.log(e);
     }

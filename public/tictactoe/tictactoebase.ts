@@ -1,54 +1,55 @@
 function Game(db, gameID) {
     let player: string;
     let turn: string;
-    let turnStream;
+    let turnSnapshot;
     const gameCollection = db.collection("games").doc(gameID);
 
-    this.init = () => {
-        gameCollection.get().then(doc => {
-            const data = doc.data();
-            const players: Array<string> = data.players;
-            //@ts-ignore
-            const uuid = firebase.auth().currentUser.uid;
-            if (players[0] === uuid) {
-                player = "1";
-            } else if (players[1] === uuid) {
-                player = "2";
-            }
-            console.log("init completed");
-            this.draw();
-        });
-        turnStream = gameCollection.onSnapshot(doc => {
+    this.init = async () => {
+        const doc = await gameCollection.get()
+        const data = await doc.data();
+        const players: Array<string> = data.players;
+        //@ts-ignore
+        const uuid = await firebase.auth().currentUser.uid;
+
+        if (players[0] === uuid) {
+            player = "1";
+        } else if (players[1] === uuid) {
+            player = "2";
+        }
+        console.log("init completed");
+        this.draw();
+
+        turnSnapshot = gameCollection.onSnapshot(doc => {
             turn = doc.data().turn;
         });
     }
 
-    this.draw = function () {
-        const mainStream = gameCollection.onSnapshot(doc => {
-            const data = doc.data();
+    this.draw = () => {
+        const mainSnapshot = gameCollection.onSnapshot(async (doc) => {
+            const data = await doc.data();
             document.getElementById("field").innerHTML = `     
             <button id="button1", onclick="field.place('button1')">${data.first}</button>|<button id="button2", onclick="field.place('button2')">${data.second}</button>|<button id="button3", onclick="field.place('button3')">${data.third}</button><br>
             <button id="button4", onclick="field.place('button4')">${data.fourth}</button>|<button id="button5", onclick="field.place('button5')">${data.fifth}</button>|<button id="button6", onclick="field.place('button6')">${data.sixth}</button><br>
             <button id="button7", onclick="field.place('button7')">${data.seventh}</button>|<button id="button8", onclick="field.place('button8')">${data.eight}</button>|<button id="button9", onclick="field.place('button9')">${data.ninth}</button>`
+            //@ts-ignore
+            document.getElementById("idText").value(gameID);
 
             if (data.won !== "") {
                 if (data.won === "tie") {
                     document.getElementById("wonMessage").textContent = `Tie!`;
-                    turnStream();
-                    mainStream();
+                    turnSnapshot();
+                    mainSnapshot();
                     if (player === "1") {
-                        db.collection("games").doc(gameID).delete().then(() => {
-                            console.log("game deleted!")
-                        });
+                        await db.collection("games").doc(gameID).delete();
+                        console.log("game deleted!");
                     }
                 } else {
                     document.getElementById("wonMessage").textContent = `Player ${data.won} won!`;
-                    turnStream();
-                    mainStream();
+                    turnSnapshot();
+                    mainSnapshot();
                     if (player === "1") {
-                        db.collection("games").doc(gameID).delete().then(() => {
-                            console.log("game deleted!")
-                        });
+                        await db.collection("games").doc(gameID).delete();
+                        console.log("game deleted!");
                     }
                 }
             }
